@@ -1,3 +1,6 @@
+# Vault de documentación — repo git aparte, checkout local, nunca tracked desde aquí
+docs/
+
 # Sistema operativo
 .DS_Store
 Thumbs.db
