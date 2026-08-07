@@ -6,56 +6,60 @@ Contexto operativo del proyecto. Léelo entero antes de tocar nada.
 
 ## 1. Qué es esto
 
-**Este repo es la documentación y especificación de un sistema — no es el sistema en sí.**
+**Este repo es el proyecto real: código en la raíz, más lo necesario para gestionarlo
+(`.claude/`, este archivo, `VAULT_MAP.md`).** La documentación y especificación del sistema
+viven en `docs/`, un vault de Obsidian versionado como repo aparte (sección 2) — no confundir
+las dos cosas.
 
-El sistema que se está especificando aquí: una mesa de rol (o de creación de lore de un
-juego) se graba, un transcriptor de voz la convierte en texto, y Claude procesa esa
-transcripción para clasificar automáticamente la información en las notas correspondientes
-de un vault de Obsidian — Personajes, Lugares, Facciones, Objetos, Hilos narrativos — y deja
-un resumen de la sesión en una nota de Partida. El objetivo es que un máster o un grupo de
-juego termine una sesión y tenga el lore actualizado sin transcribir ni ordenar nada a mano.
+El sistema que se está construyendo: una mesa de rol (o de creación de lore de un juego) se
+graba, un transcriptor de voz la convierte en texto, y Claude procesa esa transcripción para
+clasificar automáticamente la información en las notas correspondientes de un vault de
+Obsidian — Personajes, Lugares, Facciones, Objetos, Hilos narrativos — y deja un resumen de
+la sesión en una nota de Partida. El objetivo es que un máster o un grupo de juego termine
+una sesión y tenga el lore actualizado sin transcribir ni ordenar nada a mano.
 
 - **Pitch:** transcripción de voz + Claude → lore de campaña clasificado automáticamente en
   su key correspondiente, con un resumen por partida.
 - **Transcriptor elegido:** Whisper local (whisper.cpp / faster-whisper) — ver la fila del
-  7 de agosto de 2026 en el Log de decisiones de `ObsidianRPG_Obsidian/meta/contexto-para-ia.md`.
+  7 de agosto de 2026 en el Log de decisiones de `docs/meta/contexto-para-ia.md`.
   Sin costo por uso, sin depender de conexión durante la sesión de mesa.
-- **Hito actual:** Prototipo — existe una primera implementación real (proyecto Django, base
-  de transcripción con Whisper local) en el repo de código, `automatic-rpg-note-src`.
+- **Hito actual:** Prototipo — proyecto Django con base de transcripción Whisper local, en la
+  raíz de este mismo repo (`config/`, `core/`, `manage.py`, `Makefile`).
 
-Tratar esto como desarrollo de software significa: las tareas de este proyecto no son
-"escribir un párrafo de documentación", son unidades de trabajo con alcance, segmentos que
-tocan, y una definición de hecho — igual que si el producto fuera código, aunque hoy el
-producto sea un documento de arquitectura o un esquema de vault.
+Tratar la documentación como desarrollo de software significa: las tareas de `docs/tareas/`
+no son "escribir un párrafo de documentación", son unidades de trabajo con alcance, segmentos
+que tocan, y una definición de hecho — igual que si el producto fuera código, aunque el
+producto de una tarea sea un documento de arquitectura o un esquema de vault.
 
 ---
 
 ## 2. Territorio: vault vs. código
 
-`ObsidianRPG_Obsidian/` es el vault de Obsidian versionado en este repo — la especificación,
-las tareas, el lore ilustrativo. Este repo (`automatic-rpg-note`) **no contiene código de
-implementación**: el proyecto Django, el pipeline de transcripción, y en general cualquier
-código real del sistema vive en un repositorio hermano, `automatic-rpg-note-src`
-(https://github.com/OscarVargas97/automatic-rpg-note-src), con su propio historial y sus
-propias ramas.
+`docs/` es el vault de Obsidian — la especificación, las tareas, el lore ilustrativo — pero
+**no es parte de este repo**: es un repositorio git aparte
+(https://github.com/OscarVargas97/automatic-rpg-note-docs), con su propio historial y sus
+propias ramas, que simplemente vive checkoutado en la carpeta `docs/` de este directorio.
+Este repo lo tiene explícitamente en su `.gitignore` — git nunca lo toca, sin importar en qué
+rama de código se esté parado.
 
-Localmente, ambos repos viven como carpetas hermanas bajo un mismo directorio contenedor
-(`automatic-rpg-note/ObsidianRPG/` y `automatic-rpg-note/automatic-rpg-note-src/`), pero ese
-directorio contenedor **no es un repositorio git** — cada carpeta se versiona por separado.
-Esta es la decisión revisada el 2026-08-07 (reemplaza la de "un solo repo" del mismo día): un
-solo repo hacía que cambiar de rama o rebasear el código moviera también las notas del vault
-que Obsidian tiene abiertas. Ver el Log de decisiones en
-`ObsidianRPG_Obsidian/meta/contexto-para-ia.md`.
+Esta es la decisión revisada el 2026-08-07 (reemplaza tanto "un solo repo" como "repos
+hermanos sin contenedor" del mismo día): un solo repo hacía que cambiar de rama o rebasear el
+código moviera también las notas del vault que Obsidian tiene abiertas, y un submodule
+seguiría teniendo el mismo problema — es un puntero versionado que puede divergir entre
+ramas. Una carpeta gitignored no puede divergir: siempre es lo que sea que haya en
+`docs/` en el filesystem, independiente del commit o rama de este repo. Ver el Log de
+decisiones en `docs/meta/contexto-para-ia.md`.
 
-Si encuentras código de implementación real dentro de este repo (no snippets ilustrativos
-dentro de un documento de especificación), algo se saltó el proceso — repórtalo antes de
-seguir. El código real se revisa y se trabaja en `automatic-rpg-note-src`, no aquí.
+**Los cambios al vault se hacen y se pushean desde dentro de `docs/` directamente** (su
+propio `git add`/`commit`/`push` en su propio `main`), nunca a través de una rama de este
+repo. Si encuentras un cambio del vault mezclado en un commit de este repo, algo se saltó el
+proceso — repórtalo antes de seguir.
 
 ---
 
 ## 3. La regla central: segmentos
 
-Cada tarea de `ObsidianRPG_Obsidian/tareas/` declara **qué segmentos toca antes de
+Cada tarea de `docs/tareas/` declara **qué segmentos toca antes de
 ejecutarse**:
 
 `Diseño del sistema` · `Documentación técnica` · `Costos` · `Contexto para IA` ·
@@ -80,7 +84,7 @@ tareas no generan borradores de issue.
 
 ## 4. Documentación técnica
 
-`ObsidianRPG_Obsidian/documentacion-tecnica/` describe cómo funciona (o funcionará) el
+`docs/documentacion-tecnica/` describe cómo funciona (o funcionará) el
 sistema por dentro. Nace vacía — se va llenando tarea por tarea, a medida que se especifican
 áreas reales. Áreas esperadas, sin compromiso de que existan todas desde el día uno:
 
@@ -106,12 +110,13 @@ Reglas:
 
 ### Ramas y commits
 
-- `main` siempre refleja el estado real de la especificación. Nadie commitea directo sin
-  revisar.
+- `main` siempre refleja el estado real del código. Nadie commitea directo sin revisar.
 - Ramas: `feature/TSK-12-slug`, `fix/TSK-12-slug` (mismo esquema que Jueguito).
-- Commit: `[área] verbo en imperativo` — `[esquema] añade campo ultima_mencion a Personajes`.
-- Este repo es independiente del de código (`automatic-rpg-note-src`, sección 2): cada uno
-  tiene su propio historial, remoto y ramas.
+- Commit de código: `verbo en imperativo` normal. Commit dentro de `docs/` (aparte, en su
+  propio repo): `[área] verbo en imperativo` — `[esquema] añade campo ultima_mencion a
+  Personajes`.
+- Este repo es independiente del vault (`docs/`, sección 2): cada uno tiene su propio
+  historial, remoto y ramas — y el de `docs/` casi siempre debería ser solo `main`.
 
 ### Documentos
 
@@ -141,19 +146,26 @@ Reglas:
   Facción u Objeto de ejemplo dentro de un documento de especificación necesita decir
   explícitamente que es ilustrativo — nunca se confunde con una campaña real.
 - **No cambies el transcriptor elegido** (Whisper local) sin una fila en el Log de
-  decisiones de `ObsidianRPG_Obsidian/meta/contexto-para-ia.md`.
+  decisiones de `docs/meta/contexto-para-ia.md`.
 - **No promuevas una entrada de `diseno-del-sistema/` a `Canon`** sin la misma fila.
-- **No escribas código de implementación real del sistema dentro de este repo.** Vive en
-  `automatic-rpg-note-src` (sección 2) — si una tarea necesita tocar código, se trabaja allá.
+- **No commitees nada dentro de `docs/` a través de este repo.** Está gitignored a propósito
+  (sección 2) — los cambios al vault se hacen y se pushean desde dentro de `docs/`
+  directamente, con su propio `git`.
 - **No cierres una tarea** que tenga segmentos pendientes.
 
 ---
 
 ## 8. Comandos
 
-_(No hay comandos verificados todavía — este repo no ejecuta nada, es especificación. Se
-llena cuando exista una primera pieza de implementación real, por ejemplo un script de
-prueba del pipeline de transcripción.)_
+Todos vía `Makefile` en la raíz, sobre `uv`:
+
+| Comando | Qué hace |
+| --- | --- |
+| `make install` | `uv sync` — instala dependencias |
+| `make migrate` | `uv run python manage.py migrate` |
+| `make makemigrations` | `uv run python manage.py makemigrations` |
+| `make run` | `uv run python manage.py runserver` |
+| `make shell` | `uv run python manage.py shell` |
 
 ---
 
@@ -169,9 +181,9 @@ convierte en deuda que nadie sabe que existe.
 
 El mapa completo del vault — estructura de carpetas, esquema de frontmatter por tipo de
 nota, mapeo de segmentos — está en [`VAULT_MAP.md`](./VAULT_MAP.md). Consúltalo antes de
-crear o editar cualquier nota en `ObsidianRPG_Obsidian/`.
+crear o editar cualquier nota en `docs/`.
 
 El esquema del vault que el sistema *producirá* para una campaña real (Personajes, Lugares,
 Facciones, Objetos, Hilos narrativos, Partidas) es un documento de diseño, no la estructura
-de este repo — vive en `ObsidianRPG_Obsidian/diseno-del-sistema/Esquema del vault de
+de este repo — vive en `docs/diseno-del-sistema/Esquema del vault de
 campaña.md`. No lo confundas con `VAULT_MAP.md`, que describe el vault de *este* proyecto.

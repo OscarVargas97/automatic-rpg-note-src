@@ -1,13 +1,13 @@
 ---
 name: obsidian-task
-description: Crea una tarea en el vault local de Obsidian de ObsidianRPG (carpeta ObsidianRPG_Obsidian/tareas/) a partir de un requerimiento. Úsala cuando el usuario pida crear una tarea, feature, bug, investigación o pieza de documentación, o diga "genera las tareas asociadas a esto". Delimita el alcance preguntando —incluyendo qué segmentos toca (Diseño del sistema, Documentación técnica, Costos, Contexto para IA, Muro de Ideas) y si crea algo nuevo en esas carpetas—, revisa el vault solo lo necesario, crea como stub y relaciona por wikilink lo que la tarea da origen, y muestra un borrador para aprobación antes de escribir los archivos.
+description: Crea una tarea en el vault local de Obsidian de ObsidianRPG (carpeta docs/tareas/) a partir de un requerimiento. Úsala cuando el usuario pida crear una tarea, feature, bug, investigación o pieza de documentación, o diga "genera las tareas asociadas a esto". Delimita el alcance preguntando —incluyendo qué segmentos toca (Diseño del sistema, Documentación técnica, Costos, Contexto para IA, Muro de Ideas) y si crea algo nuevo en esas carpetas—, revisa el vault solo lo necesario, crea como stub y relaciona por wikilink lo que la tarea da origen, y muestra un borrador para aprobación antes de escribir los archivos.
 ---
 
-# Crear tarea en el vault (ObsidianRPG_Obsidian/tareas/)
+# Crear tarea en el vault (docs/tareas/)
 
 ## Destino
 
-`ObsidianRPG_Obsidian/tareas/`, dentro del vault local de Obsidian versionado en este repo.
+`docs/tareas/`, dentro del vault local de Obsidian versionado en este repo.
 El `id` (`TSK-N`) se calcula escaneando el vault — **nunca lo inventes ni lo pidas al
 usuario**. Ver `VAULT_MAP.md` en la raíz del repo para el esquema completo si algo aquí no
 cuadra.
@@ -24,7 +24,7 @@ select/array contra `VAULT_MAP.md` — si un valor no aparece ahí tal cual, no 
 real es YAML (`id: "TSK-1"`, sin comillas en la clave):
 
 ```bash
-grep -rho 'id: "TSK-[0-9]*"' ObsidianRPG_Obsidian/tareas/ | grep -o '[0-9]*' | sort -n | tail -1
+grep -rho 'id: "TSK-[0-9]*"' docs/tareas/ | grep -o '[0-9]*' | sort -n | tail -1
 ```
 
 Si no hay resultado, el vault está vacío y el primero es `TSK-1`.
@@ -42,7 +42,7 @@ destino ya decidido.
 
    - **Límite del alcance.** Hasta dónde llega este trabajo y qué queda fuera.
    - **Una tarea o varias.** Cada tarea es un archivo independiente en
-     `ObsidianRPG_Obsidian/tareas/`, sin jerarquía padre-hijo: si el requerimiento abarca
+     `docs/tareas/`, sin jerarquía padre-hijo: si el requerimiento abarca
      frentes separables, crea notas hermanas.
    - **Qué segmentos toca.** *La pregunta que no puede faltar.* Es la regla central del
      proyecto (ver `CLAUDE.md`, sección 3): `Diseño del sistema`, `Documentación técnica`,
@@ -77,7 +77,7 @@ destino ya decidido.
 5. **Escribir la tarea**: arma el frontmatter verificando cada campo select/array contra
    `VAULT_MAP.md` —combinando lo que ya existía (paso 2) con lo recién creado (paso 4), como
    wikilinks `[[Nombre exacto del archivo]]`— y escríbela con `Write` en
-   `ObsidianRPG_Obsidian/tareas/`.
+   `docs/tareas/`.
 
 6. **Devolver las rutas**: la del archivo de la tarea y la de cualquier entrada nueva creada.
 

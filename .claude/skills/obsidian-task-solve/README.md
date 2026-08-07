@@ -3,7 +3,7 @@
 > Claude Code · skill de proyecto · contraparte de `/obsidian-task` · adaptada del par de
 > Jueguito a ObsidianRPG el 7 de agosto de 2026.
 
-Toma la ruta de una tarea de **`ObsidianRPG_Obsidian/tareas/`** y la ejecuta. Se detiene una
+Toma la ruta de una tarea de **`docs/tareas/`** y la ejecuta. Se detiene una
 sola vez, antes de escribir contenido real, para preguntar lo que la tarea dejó pendiente y
 presentar el plan en el mismo mensaje. Crea la rama de convención, ejecuta respetando las
 prohibiciones de `CLAUDE.md`, y **al cerrar actualiza ella misma los segmentos declarados**
@@ -13,7 +13,7 @@ en el vault — Documentación Técnica, Diseño del Sistema, Log de decisiones 
 
 | | |
 |---|---|
-| Entrada | ruta de un archivo en `ObsidianRPG_Obsidian/tareas/` |
+| Entrada | ruta de un archivo en `docs/tareas/` |
 | Paradas | una, salvo excepciones duras |
 | Git | crea la rama de convención; nunca commitea ni hace push |
 | `estado` | lo cambia al cerrar, solo si corresponde |

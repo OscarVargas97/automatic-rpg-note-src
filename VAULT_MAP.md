@@ -8,10 +8,12 @@ documento dentro de este mismo vault, no una estructura aparte. Ver la última s
 
 ## Ubicación
 
-`./ObsidianRPG_Obsidian/`, dentro del repo, versionado junto al resto.
+`./docs/` — repositorio git aparte (`automatic-rpg-note-docs`), gitignored por este repo
+(ver `CLAUDE.md` sección 2). Vive checkoutado ahí en el filesystem, pero no se versiona junto
+al resto: sus commits y push se hacen desde dentro de `docs/`, con su propio `git`.
 
 ```
-ObsidianRPG_Obsidian/
+docs/
   tareas/                     # Backlog de este proyecto
     terminadas/               # Tareas con estado: Listo — se mueven aquí al cerrarlas
   diseno-del-sistema/         # Especificación del sistema a construir — el entregable central
@@ -30,7 +32,7 @@ de archivo.
 
 **ID siguiente**:
 ```bash
-grep -rho 'id: "TSK-[0-9]*"' ObsidianRPG_Obsidian/tareas/ | grep -o '[0-9]*' | sort -n | tail -1
+grep -rho 'id: "TSK-[0-9]*"' docs/tareas/ | grep -o '[0-9]*' | sort -n | tail -1
 ```
 +1. Si el vault está vacío, el primero es `TSK-1`. El frontmatter real es YAML (`id:
 "TSK-1"`, sin comillas en la clave) — el patrón busca eso, no un `"id":` con comillas de
@@ -51,7 +53,7 @@ campo select/array contra las tablas de esta sección antes de escribirlo.
 
 ## Esquema de propiedades por tipo de nota
 
-### Tareas (`ObsidianRPG_Obsidian/tareas/`)
+### Tareas (`docs/tareas/`)
 
 | Campo | Valores |
 |---|---|
@@ -65,16 +67,16 @@ campo select/array contra las tablas de esta sección antes de escribirlo.
 | `segmentos_a_actualizar` | array: `Diseño del sistema` · `Documentación técnica` · `Costos` · `Contexto para IA` · `Muro de Ideas` · `Ninguno` |
 | `segmentos_actualizados` | bool, todo o nada |
 | `definicion_de_hecho` | bool |
-| `documentacion_a_actualizar` | array de wikilinks → `ObsidianRPG_Obsidian/documentacion-tecnica/` |
-| `diseno_de_referencia` | array de wikilinks → `ObsidianRPG_Obsidian/diseno-del-sistema/` |
-| `costo_asociado` | array de wikilinks → `ObsidianRPG_Obsidian/costos-y-presupuesto/` |
+| `documentacion_a_actualizar` | array de wikilinks → `docs/documentacion-tecnica/` |
+| `diseno_de_referencia` | array de wikilinks → `docs/diseno-del-sistema/` |
+| `costo_asociado` | array de wikilinks → `docs/costos-y-presupuesto/` |
 | `rama` | texto, vacío hasta que la tarea entra en ejecución |
 | `responsable`, `estimacion_dias`, `fechas`, `bloqueada_por` | vacíos salvo dato concreto del usuario |
 
 Cuerpo de la nota (debajo del frontmatter): `## Problema`, `## Resultado esperado`,
 `## Decisión pendiente` (si aplica), `## Referencias`, línea `Origen:`.
 
-### Diseño del sistema (`ObsidianRPG_Obsidian/diseno-del-sistema/`)
+### Diseño del sistema (`docs/diseno-del-sistema/`)
 
 El entregable central de este repo: cada nota es una pieza de la especificación del sistema
 (un esquema, un pipeline, una regla de enrutamiento).
@@ -87,7 +89,7 @@ El entregable central de este repo: cada nota es una pieza de la especificación
 | `prioridad` | MoSCoW, opcional |
 | `complejidad` | opcional |
 
-### Documentación Técnica (`ObsidianRPG_Obsidian/documentacion-tecnica/`)
+### Documentación Técnica (`docs/documentacion-tecnica/`)
 
 | Campo | Valores |
 |---|---|
@@ -98,7 +100,7 @@ El entregable central de este repo: cada nota es una pieza de la especificación
 | `herramientas` | array: `Whisper (local)` · `Claude / Claude Code` · `Python` · `Obsidian` · `Git` · `Otro` |
 | `ultima_revision` | fecha |
 
-### Costos (`ObsidianRPG_Obsidian/costos-y-presupuesto/`)
+### Costos (`docs/costos-y-presupuesto/`)
 
 | Campo | Valores |
 |---|---|
@@ -113,11 +115,11 @@ El entregable central de este repo: cada nota es una pieza de la especificación
 
 | Segmento | Dónde |
 |---|---|
-| `Diseño del sistema` | `ObsidianRPG_Obsidian/diseno-del-sistema/` |
-| `Documentación técnica` | `ObsidianRPG_Obsidian/documentacion-tecnica/` |
-| `Costos` | `ObsidianRPG_Obsidian/costos-y-presupuesto/` |
-| `Contexto para IA` | tabla de Log de decisiones en `ObsidianRPG_Obsidian/meta/contexto-para-ia.md` |
-| `Muro de Ideas` | `ObsidianRPG_Obsidian/meta/muro-de-ideas.md` |
+| `Diseño del sistema` | `docs/diseno-del-sistema/` |
+| `Documentación técnica` | `docs/documentacion-tecnica/` |
+| `Costos` | `docs/costos-y-presupuesto/` |
+| `Contexto para IA` | tabla de Log de decisiones en `docs/meta/contexto-para-ia.md` |
+| `Muro de Ideas` | `docs/meta/muro-de-ideas.md` |
 | `Ninguno` | no-op |
 
 ## Validación local

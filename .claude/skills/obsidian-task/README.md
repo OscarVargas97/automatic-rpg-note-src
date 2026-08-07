@@ -3,14 +3,14 @@
 > Claude Code · skill de proyecto · adaptada del par `obsidian-task`/`obsidian-task-solve` de
 > Jueguito a ObsidianRPG el 7 de agosto de 2026.
 
-Convierte un requerimiento en una tarea de **`ObsidianRPG_Obsidian/tareas/`**. Te pregunta el
+Convierte un requerimiento en una tarea de **`docs/tareas/`**. Te pregunta el
 alcance en un solo intercambio —incluyendo qué segmentos toca, la regla central de
 `CLAUDE.md`—, revisa el vault solo lo necesario, y escribe los archivos con tu aprobación. La
 tarea enuncia el problema; cómo se resuelve lo decide quien la tome.
 
 | | |
 |---|---|
-| Destino | `ObsidianRPG_Obsidian/tareas/` |
+| Destino | `docs/tareas/` |
 | Herramientas | `Read` / `Write` / `Grep` / `Glob` sobre el vault local |
 | Idioma | español |
 | Escribe | solo con aprobación |
@@ -66,7 +66,7 @@ localmente en este paso.
 solo porque "tendría sentido que existiera" — verifícalo con `Grep`/`Glob` antes de
 referenciarlo.
 
-**Una tarea es un archivo.** `ObsidianRPG_Obsidian/tareas/` no tiene relación padre-hijo ni
+**Una tarea es un archivo.** `docs/tareas/` no tiene relación padre-hijo ni
 sub-items. Si el requerimiento abarca varios frentes, se crean varios archivos hermanos con
 `Tema #N — Título`.
 

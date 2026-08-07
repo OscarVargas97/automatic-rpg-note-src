@@ -1,9 +1,9 @@
 ---
 name: obsidian-task-solve
-description: Implementa una tarea de ObsidianRPG_Obsidian/tareas/ (vault local de Obsidian de ObsidianRPG) a partir de su ruta. Úsala cuando el usuario pase la ruta de un archivo de esa carpeta y pida resolverla, implementarla, "hazme esta tarea" o "trabajemos esta tarea". Hace una única parada al inicio, crea la rama de convención, ejecuta respetando las prohibiciones de CLAUDE.md, y al cerrar actualiza ella misma los segmentos declarados en el vault (Documentación Técnica, Diseño del Sistema, Log de decisiones), marca segmentos_actualizados + estado, añade el registro de cierre a la propia tarea y, si el estado quedó en Listo, la mueve a tareas/terminadas/.
+description: Implementa una tarea de docs/tareas/ (vault local de Obsidian de ObsidianRPG) a partir de su ruta. Úsala cuando el usuario pase la ruta de un archivo de esa carpeta y pida resolverla, implementarla, "hazme esta tarea" o "trabajemos esta tarea". Hace una única parada al inicio, crea la rama de convención, ejecuta respetando las prohibiciones de CLAUDE.md, y al cerrar actualiza ella misma los segmentos declarados en el vault (Documentación Técnica, Diseño del Sistema, Log de decisiones), marca segmentos_actualizados + estado, añade el registro de cierre a la propia tarea y, si el estado quedó en Listo, la mueve a tareas/terminadas/.
 ---
 
-# Resolver tarea del vault (ObsidianRPG_Obsidian/tareas/)
+# Resolver tarea del vault (docs/tareas/)
 
 Contraparte de `obsidian-task`: esa crea la tarea sin decidir cómo se resuelve, esta la
 ejecuta **y cierra el ciclo completo de segmentos** que `CLAUDE.md` exige — el resultado
@@ -36,7 +36,7 @@ se avisa, aunque ya haya pasado la única parada.
 
 - **No se inventa lore de ejemplo sin marcarlo como ficticio.**
 - **No se cambia el transcriptor elegido** sin una fila nueva en el Log de decisiones de
-  `ObsidianRPG_Obsidian/meta/contexto-para-ia.md` — y eso se pregunta primero, no se decide
+  `docs/meta/contexto-para-ia.md` — y eso se pregunta primero, no se decide
   solo.
 - **No se promueve una pieza de `diseno-del-sistema/` a Canon** sin la misma fila.
 - **No se escribe código de implementación real del sistema** sin que la tarea lo declare
@@ -44,7 +44,7 @@ se avisa, aunque ya haya pasado la única parada.
 
 ## Entrada
 
-Ruta de un archivo dentro de `ObsidianRPG_Obsidian/tareas/`. Léelo con `Read`. Si lo que se
+Ruta de un archivo dentro de `docs/tareas/`. Léelo con `Read`. Si lo que se
 pasó es una carpeta o un patrón en vez de un archivo concreto, pide cuál tarea antes de
 seguir.
 
