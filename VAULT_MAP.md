@@ -97,7 +97,7 @@ El entregable central de este repo: cada nota es una pieza de la especificación
 | `area` | `Transcripción (Whisper)` · `Ingesta y enrutamiento (Claude)` · `Esquema de datos / Frontmatter` · `Vault y escritura de archivos` · `Infraestructura / Despliegue` |
 | `estado` | `Vigente` · `Desactualizado` · `Borrador` — nace `Borrador`, nunca `Vigente` de entrada |
 | `ruta_en_el_repo` | ruta verificada, vacía si el documento describe algo que aún no tiene implementación |
-| `herramientas` | array: `Whisper (local)` · `Claude / Claude Code` · `Python` · `Obsidian` · `Git` · `Otro` |
+| `herramientas` | array: `Whisper (local)` · `Claude / Claude Code` · `Python` · `Django` · `Huey` · `htmx` · `Alpine.js` · `Obsidian` · `Git` · `Otro` |
 | `ultima_revision` | fecha |
 
 ### Costos (`docs/costos-y-presupuesto/`)

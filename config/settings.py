@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'huey.contrib.djhuey',
     'core',
+    'orchestrator',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +133,36 @@ STORAGES = {
 # https://docs.djangoproject.com/en/5.1/ref/models/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Media (audios uploaded through the orchestrator)
+# https://docs.djangoproject.com/en/5.1/topics/files/
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Uploads: a 2-3 hour tabletop session audio (WAV 16kHz mono) weighs ~300-350 MB.
+# FILE_UPLOAD_MAX_MEMORY_SIZE is the threshold above which Django already streams to disk
+# instead of memory (not a size limit); DATA_UPLOAD_MAX_MEMORY_SIZE can reject the request if
+# left at the 2.5 MB default, so it's raised explicitly.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 1024  # 1 GB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
+
+
+# Orchestrator: where campaign vaults live by default. Single local user (Oscar), whose
+# Documentos folder was redirected off C: to a secondary disk — override via env var so a
+# different machine (or a future user) isn't stuck with this one's drive letter.
+DEFAULT_VAULT_BASE_DIR = os.environ.get(
+    'VAULT_BASE_DIR', r'E:\Users\oscar\OneDrive\Documentos'
+)
+
+
+# Huey (background processing) — see decision log 2026-08-07 in docs/meta/contexto-para-ia.md:
+# SQLite instead of Celery/Redis, single local user. Requires a second process running
+# (`make huey`) besides `make run` — without it, jobs stay queued but never get processed.
+HUEY = {
+    'huey_class': 'huey.SqliteHuey',
+    'name': 'orchestrator',
+    'filename': str(BASE_DIR / 'huey.sqlite3'),
+    'immediate': False,
+}

@@ -1,0 +1,35 @@
+<div class="border border-border rounded-lg p-3 mt-2 bg-background">
+  <p class="text-xs text-muted mb-2 break-all">{{ current_path }}</p>
+  <div class="max-h-48 overflow-y-auto space-y-1">
+    {% if parent_path %}
+      <button type="button"
+              hx-get="{% url 'orchestrator:browse_folders' %}?path={{ parent_path|urlencode }}"
+              hx-target="#folder-browser" hx-swap="innerHTML"
+              class="block w-full text-left text-sm text-muted hover:text-foreground px-2 py-1 rounded">
+        .. (subir)
+      </button>
+    {% endif %}
+    {% for folder in subfolders %}
+      <button type="button"
+              hx-get="{% url 'orchestrator:browse_folders' %}?path={{ folder.path|urlencode }}"
+              hx-target="#folder-browser" hx-swap="innerHTML"
+              class="block w-full text-left text-sm hover:text-foreground px-2 py-1 rounded">
+        {{ folder.name }}
+      </button>
+    {% empty %}
+      <p class="text-xs text-muted px-2 py-1">Sin subcarpetas visibles.</p>
+    {% endfor %}
+  </div>
+  <div class="flex gap-2 mt-3">
+    <button type="button"
+            hx-on:click="const el = document.getElementById('vault_path'); el.value = '{{ current_path|escapejs }}'; el.dispatchEvent(new Event('input')); document.getElementById('folder-browser').innerHTML = '';"
+            class="rounded-lg bg-primary text-primary-foreground px-3 py-1.5 text-xs font-medium">
+      Usar esta carpeta
+    </button>
+    <button type="button"
+            hx-on:click="document.getElementById('folder-browser').innerHTML = '';"
+            class="rounded-lg border border-border px-3 py-1.5 text-xs">
+      Cancelar
+    </button>
+  </div>
+</div>
