@@ -181,7 +181,17 @@ def job_create(request, project_id):
     if not files:
         return HttpResponseBadRequest("Hace falta subir al menos un audio.")
 
-    job = TranscriptionJob.objects.create(project=project)
+    speaker_count_raw = request.POST.get("speaker_count", "").strip()
+    speaker_count = None
+    if speaker_count_raw:
+        if not speaker_count_raw.isdigit() or int(speaker_count_raw) < 2:
+            return HttpResponseBadRequest(
+                "El número de hablantes debe ser al menos 2 (dejalo vacío si no querés "
+                "diarización)."
+            )
+        speaker_count = int(speaker_count_raw)
+
+    job = TranscriptionJob.objects.create(project=project, speaker_count=speaker_count)
     for order, file in enumerate(files):
         UploadedAudio.objects.create(job=job, file=file, order=order)
 
