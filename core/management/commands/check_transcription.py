@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
-from faster_whisper import WhisperModel
 
-MODEL_SIZE = "small"
+from core.transcription import MODEL_SIZE, load_model
 
 
 class Command(BaseCommand):
@@ -11,12 +10,7 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
-        try:
-            WhisperModel(MODEL_SIZE, device="cuda", compute_type="float16")
-            device = "GPU (cuda, float16)"
-        except Exception:
-            WhisperModel(MODEL_SIZE, device="cpu", compute_type="int8")
-            device = "CPU (int8)"
+        _model, device = load_model()
 
         self.stdout.write(
             self.style.SUCCESS(f"Modelo '{MODEL_SIZE}' listo para transcribir — {device}.")

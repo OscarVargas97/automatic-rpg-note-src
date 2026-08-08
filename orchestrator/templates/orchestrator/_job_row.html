@@ -1,0 +1,29 @@
+<div id="job-{{ job.id }}"
+     class="border border-border bg-card rounded-lg p-3 flex items-center justify-between gap-4"
+     {% if job.status == "pending" or job.status == "in_progress" %}
+       hx-get="{% url 'orchestrator:job_status' job.id %}"
+       hx-trigger="every 3s"
+       hx-swap="outerHTML"
+     {% endif %}>
+  <div class="flex-1 min-w-0">
+    <p class="text-sm font-medium">Trabajo #{{ job.id }}</p>
+    <p class="text-xs text-muted">{{ job.created_at }}</p>
+    {% if job.status == "in_progress" %}
+      <div class="flex items-center gap-2 mt-2">
+        <div class="w-32 h-1.5 rounded-full bg-border overflow-hidden">
+          <div class="h-full bg-primary" style="width: {{ job.progress|floatformat:0 }}%"></div>
+        </div>
+        <span class="text-xs text-muted">{{ job.progress|floatformat:0 }}%</span>
+      </div>
+    {% endif %}
+    {% if job.status == "done" %}
+      <p class="text-xs text-muted mt-1 break-all">{{ job.raw_path }}</p>
+    {% endif %}
+    {% if job.status == "error" %}
+      <p class="text-xs text-red-400 mt-1">{{ job.error_message }}</p>
+    {% endif %}
+  </div>
+  <span class="shrink-0 text-xs px-2 py-1 rounded-full border border-border text-muted">
+    {{ job.get_status_display }}
+  </span>
+</div>

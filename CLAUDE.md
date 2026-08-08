@@ -118,6 +118,20 @@ Reglas:
 - Este repo es independiente del vault (`docs/`, sección 2): cada uno tiene su propio
   historial, remoto y ramas — y el de `docs/` casi siempre debería ser solo `main`.
 
+### Idioma del código (decisión 2026-08-07, ver Log de decisiones en `docs/`)
+
+- **Código en inglés**: nombres de apps, modelos, campos, vistas, urls, templates, funciones,
+  variables, comentarios y docstrings — tanto Python como HTML/templates/JS. Aplica a todo el
+  código de este repo (raíz), no a `docs/`.
+- **Texto legible para el usuario, en español**: labels, botones, placeholders, mensajes de
+  error, help text de comandos — cualquier string que el usuario vea en el navegador o en la
+  terminal. La excepción son valores literales atados a un contrato externo ya en español (p.
+  ej. los nombres de carpeta `campaña/personajes/` que exige `Esquema del vault de
+  campaña.md`) — esos no se traducen porque son datos, no código.
+- Ante la duda de si algo es "código" o "texto legible": si el usuario lo lee corriendo la
+  app (label, botón, mensaje de error, `--help`), va en español. Si solo lo lee quien edita
+  el código (identificador, comentario, nombre de archivo), va en inglés.
+
 ### Documentos
 
 - Prosa clara, español, sin relleno. Tablas solo para mapeos reales de valores (frontmatter,

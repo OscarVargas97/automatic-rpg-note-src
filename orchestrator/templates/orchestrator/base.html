@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ObsidianRPG — Orquestador{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            border: '#27272a',
+            background: '#09090b',
+            foreground: '#fafafa',
+            muted: '#71717a',
+            card: '#18181b',
+            primary: '#fafafa',
+            'primary-foreground': '#09090b',
+          },
+          borderRadius: { lg: '0.5rem' },
+        },
+      },
+    };
+  </script>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>[x-cloak] { display: none !important; }</style>
+  <script>
+    // htmx requests issued outside a <form> (e.g. hx-delete on a bare button) carry no
+    // {% csrf_token %} input, so Django's CsrfViewMiddleware rejects them — attach the
+    // token as a header on every htmx request instead.
+    document.addEventListener('htmx:configRequest', (event) => {
+      const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+      if (match) {
+        event.detail.headers['X-CSRFToken'] = match[1];
+      }
+    });
+  </script>
+</head>
+<body class="bg-background text-foreground min-h-screen font-sans">
+  <header class="border-b border-border">
+    <nav class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-4">
+      <a href="{% url 'orchestrator:project_list' %}" class="font-semibold">ObsidianRPG</a>
+      <span class="text-muted text-sm">Orquestador de transcripción</span>
+    </nav>
+  </header>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

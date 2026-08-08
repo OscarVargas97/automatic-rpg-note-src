@@ -1,4 +1,4 @@
-.PHONY: install migrate makemigrations run shell
+.PHONY: install migrate makemigrations run shell huey
 
 install:
 	uv sync
@@ -14,3 +14,6 @@ run:
 
 shell:
 	uv run python manage.py shell
+
+huey:
+	uv run python manage.py run_huey
