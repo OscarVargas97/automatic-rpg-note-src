@@ -26,11 +26,27 @@ def transcribe_job(job_id: int) -> None:
         audios = list(job.audios.all())
         total_duration = sum(get_audio_duration(a.file.path) for a in audios)
 
+        # Diarization is opt-in per job (speaker_count set at upload) — importing
+        # core.diarization pulls in PyTorch/SpeechBrain, so it stays out of the process for
+        # jobs that don't ask for it.
+        diarize = label_for = None
+        vad_model = embedding_model = None
+        if job.speaker_count:
+            from core.diarization import diarize, label_for, load_diarization_models
+
+            vad_model, embedding_model = load_diarization_models()
+
         lines: list[str] = []
         offset = 0.0
         last_saved_pct = -1
 
         for audio in audios:
+            diarization_windows: list[tuple[float, float, str]] = []
+            if job.speaker_count:
+                diarization_windows = diarize(
+                    audio.file.path, job.speaker_count, vad_model, embedding_model
+                )
+
             segments, _info = model.transcribe(audio.file.path)
             lines.append(f"## {audio.file.name}")
             audio_end = offset
@@ -38,7 +54,14 @@ def transcribe_job(job_id: int) -> None:
                 start = offset + seg.start
                 end = offset + seg.end
                 audio_end = max(audio_end, end)
-                lines.append(f"[{start:.2f} - {end:.2f}] {seg.text.strip()}")
+
+                prefix = ""
+                if diarization_windows:
+                    speaker = label_for(diarization_windows, seg.start, seg.end)
+                    if speaker:
+                        prefix = f"{speaker}: "
+
+                lines.append(f"[{start:.2f} - {end:.2f}] {prefix}{seg.text.strip()}")
 
                 # Segments arrive every few seconds of audio — cheap enough to persist
                 # progress on each one, throttled to one write per whole percentage point.

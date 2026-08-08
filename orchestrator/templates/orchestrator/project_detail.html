@@ -84,6 +84,18 @@
         se seleccionan y se unen en un solo raw.
       </p>
     </div>
+    <div>
+      <label class="block text-sm text-muted mb-1" for="speaker_count">
+        Número de hablantes (opcional)
+      </label>
+      <input id="speaker_count" name="speaker_count" type="number" min="2" placeholder="ej. 4"
+             class="w-32 rounded-lg border border-border bg-background px-3 py-2 text-sm">
+      <p class="text-xs text-muted mt-1">
+        Si lo indicás, el raw marca cada línea con qué voz la dijo (<code>SPEAKER_00</code>,
+        <code>SPEAKER_01</code>…) — sin identidad, sólo para distinguir voces distintas.
+        Dejalo vacío para transcribir sin esa separación.
+      </p>
+    </div>
     <button type="submit"
             class="rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium">
       Subir y transcribir

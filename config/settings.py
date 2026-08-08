@@ -149,6 +149,12 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 1024  # 1 GB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
+# Diarization (Tema #6): cache dir for the Silero VAD / SpeechBrain ECAPA-TDNN model
+# weights — same pattern as MEDIA_ROOT, under a folder already gitignored for models (see
+# "Modelos de Whisper local" in .gitignore).
+DIARIZATION_MODELS_DIR = BASE_DIR / 'models' / 'diarization'
+
+
 # Orchestrator: where campaign vaults live by default. Single local user (Oscar), whose
 # Documentos folder was redirected off C: to a secondary disk — override via env var so a
 # different machine (or a future user) isn't stuck with this one's drive letter.

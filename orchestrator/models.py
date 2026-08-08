@@ -90,6 +90,11 @@ class TranscriptionJob(models.Model):
     progress = models.FloatField(
         default=0.0, help_text="Percent (0-100) of total audio duration transcribed so far."
     )
+    speaker_count = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        help_text="Number of distinct speakers to diarize into. Empty means no diarization.",
+    )
     raw_path = models.CharField(max_length=1000, blank=True, default="")
     error_message = models.TextField(blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
